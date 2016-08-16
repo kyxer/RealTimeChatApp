@@ -125,6 +125,22 @@ class MessagesController: UITableViewController {
         return 72
     }
     
+    override func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {
+        let message = messages[indexPath.row]
+        
+        guard let chatPartnerId = message.chatPartnerId() else { return }
+        
+        let ref = FIRDatabase.database().reference().child("users").child(chatPartnerId)
+        ref.observeSingleEventOfType(.Value, withBlock: {(snapshot) in
+            guard let dictionary = snapshot.value as? [String:AnyObject] else { return }
+            
+            let user = User()
+            user.id = chatPartnerId
+            user.setValuesForKeysWithDictionary(dictionary)
+            self.showChatController(user)
+        }, withCancelBlock: nil)
+    }
+    
     func checkIfUserIsLoggedIn(){
         
         if FIRAuth.auth()?.currentUser?.uid == nil {
@@ -143,12 +159,11 @@ class MessagesController: UITableViewController {
         }
         FIRDatabase.database().reference().child("users").child(uid).observeSingleEventOfType(.Value, withBlock: { (snapshot) in
             if let dictionary = snapshot.value as? [String:AnyObject] {
-            if let name = dictionary["name"] as? String {
-                self.navigationItem.title = name
+            
                 let user = User()
                 user.setValuesForKeysWithDictionary(dictionary)
                 self.setupNavBarWithUser(user)
-                }
+                
             }
             
             }, withCancelBlock:nil)
@@ -161,8 +176,6 @@ class MessagesController: UITableViewController {
         tableView.reloadData()
         observeUserMessages()
         
-        
-        self.navigationItem.title = user.name
         let titleView = UIView()
         titleView.frame = CGRect(x:0, y:0, width: 100, height: 40)
         let containerView = UIView()

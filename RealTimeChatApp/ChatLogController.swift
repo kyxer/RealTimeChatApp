@@ -9,13 +9,15 @@
 import UIKit
 import Firebase
 
-class ChatLogController: UICollectionViewController, UITextFieldDelegate {
-    
+class ChatLogController: UICollectionViewController, UICollectionViewDelegateFlowLayout, UITextFieldDelegate {
     var user:User? {
         didSet {
             navigationItem.title = user?.name
+            observeMessages()
         }
     }
+    var messages = [Message]()
+    let cellId = "cellId"
     
     lazy var inputTextField:UITextField = {
         let textField = UITextField()
@@ -29,11 +31,15 @@ class ChatLogController: UICollectionViewController, UITextFieldDelegate {
     override func viewDidLoad() {
         super.viewDidLoad()
         collectionView?.backgroundColor = UIColor.whiteColor()
+        collectionView?.alwaysBounceVertical = true
+        collectionView?.registerClass(ChatMessageCell.self, forCellWithReuseIdentifier: cellId)
         setupInputComponents()
     }
     
     func setupInputComponents(){
+        
         let containerView = UIView()
+        containerView.backgroundColor = UIColor.whiteColor()
         containerView.translatesAutoresizingMaskIntoConstraints = false
         view.addSubview(containerView)
         
@@ -101,6 +107,44 @@ class ChatLogController: UICollectionViewController, UITextFieldDelegate {
         }
         
     }
+    
+    func observeMessages(){
+        guard let uid = FIRAuth.auth()?.currentUser?.uid else { return }
+        
+        let userMessagesRef = FIRDatabase.database().reference().child("users-messages").child(uid)
+        userMessagesRef.observeEventType(.ChildAdded, withBlock: { (snapshot) in
+            
+            let messageId = snapshot.key
+            let messagesRef = FIRDatabase.database().reference().child("messages").child(messageId)
+            messagesRef.observeSingleEventOfType(.Value, withBlock: { (snapshot) in
+                guard let dictionary = snapshot.value as? [String:AnyObject] else { return }
+                let message = Message()
+                message.setValuesForKeysWithDictionary(dictionary)
+                
+                if message.chatPartnerId() == self.user?.id {
+                    self.messages.append(message)
+                    self.collectionView?.reloadData()
+                }
+            })
+            
+        })
+    }
+    
+    override func collectionView(collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
+        return messages.count
+    }
+    
+    override func collectionView(collectionView: UICollectionView, cellForItemAtIndexPath indexPath: NSIndexPath) -> UICollectionViewCell {
+        let cell = collectionView.dequeueReusableCellWithReuseIdentifier(cellId, forIndexPath: indexPath) as! ChatMessageCell
+        let message = messages[indexPath.item]
+        cell.textView.text = message.text
+        return cell
+    }
+    
+    func collectionView(collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAtIndexPath indexPath: NSIndexPath) -> CGSize {
+        return CGSize(width: view.frame.width, height: 80)
+    }
+    
     
     func textFieldShouldReturn(textField: UITextField) -> Bool {
         handleSend()
