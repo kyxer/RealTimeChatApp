@@ -15,6 +15,9 @@
 		DE76D1E51D5EB35B00701533 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = DE76D1E31D5EB35B00701533 /* LaunchScreen.storyboard */; };
 		DE76D1EE1D5EBA3900701533 /* LoginController.swift in Sources */ = {isa = PBXBuildFile; fileRef = DE76D1ED1D5EBA3900701533 /* LoginController.swift */; };
 		DE76D1F11D5EC6A200701533 /* Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = DE76D1F01D5EC6A200701533 /* Extensions.swift */; };
+		DEA98E2C1D621BB10046EB89 /* ChatLogController.swift in Sources */ = {isa = PBXBuildFile; fileRef = DEA98E2B1D621BB10046EB89 /* ChatLogController.swift */; };
+		DEA98E2E1D6288F00046EB89 /* Message.swift in Sources */ = {isa = PBXBuildFile; fileRef = DEA98E2D1D6288F00046EB89 /* Message.swift */; };
+		DEA98E311D6297AC0046EB89 /* UserCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = DEA98E301D6297AC0046EB89 /* UserCell.swift */; };
 		DECEAA7D1D6015DA0081F2CB /* NewMessageController.swift in Sources */ = {isa = PBXBuildFile; fileRef = DECEAA7C1D6015DA0081F2CB /* NewMessageController.swift */; };
 		DECEAA801D6018600081F2CB /* User.swift in Sources */ = {isa = PBXBuildFile; fileRef = DECEAA7F1D6018600081F2CB /* User.swift */; };
 		DECEAA821D60B8CC0081F2CB /* LoginController+handlers.swift in Sources */ = {isa = PBXBuildFile; fileRef = DECEAA811D60B8CC0081F2CB /* LoginController+handlers.swift */; };
@@ -34,6 +37,9 @@
 		DE76D1E61D5EB35B00701533 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		DE76D1ED1D5EBA3900701533 /* LoginController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LoginController.swift; sourceTree = "<group>"; };
 		DE76D1F01D5EC6A200701533 /* Extensions.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Extensions.swift; sourceTree = "<group>"; };
+		DEA98E2B1D621BB10046EB89 /* ChatLogController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ChatLogController.swift; sourceTree = "<group>"; };
+		DEA98E2D1D6288F00046EB89 /* Message.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Message.swift; sourceTree = "<group>"; };
+		DEA98E301D6297AC0046EB89 /* UserCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UserCell.swift; sourceTree = "<group>"; };
 		DECEAA7C1D6015DA0081F2CB /* NewMessageController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NewMessageController.swift; sourceTree = "<group>"; };
 		DECEAA7F1D6018600081F2CB /* User.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = User.swift; sourceTree = "<group>"; };
 		DECEAA811D60B8CC0081F2CB /* LoginController+handlers.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "LoginController+handlers.swift"; sourceTree = "<group>"; };
@@ -90,6 +96,7 @@
 		DE76D1D91D5EB35B00701533 /* RealTimeChatApp */ = {
 			isa = PBXGroup;
 			children = (
+				DEA98E2F1D62970F0046EB89 /* View */,
 				DECEAA7E1D60184A0081F2CB /* Model */,
 				DE76D1EF1D5EBE6400701533 /* Utils */,
 				DE76D1EC1D5EBA1100701533 /* Controller */,
@@ -110,6 +117,7 @@
 				DE76D1ED1D5EBA3900701533 /* LoginController.swift */,
 				DECEAA7C1D6015DA0081F2CB /* NewMessageController.swift */,
 				DECEAA811D60B8CC0081F2CB /* LoginController+handlers.swift */,
+				DEA98E2B1D621BB10046EB89 /* ChatLogController.swift */,
 			);
 			name = Controller;
 			sourceTree = "<group>";
@@ -122,10 +130,19 @@
 			name = Utils;
 			sourceTree = "<group>";
 		};
+		DEA98E2F1D62970F0046EB89 /* View */ = {
+			isa = PBXGroup;
+			children = (
+				DEA98E301D6297AC0046EB89 /* UserCell.swift */,
+			);
+			name = View;
+			sourceTree = "<group>";
+		};
 		DECEAA7E1D60184A0081F2CB /* Model */ = {
 			isa = PBXGroup;
 			children = (
 				DECEAA7F1D6018600081F2CB /* User.swift */,
+				DEA98E2D1D6288F00046EB89 /* Message.swift */,
 			);
 			name = Model;
 			sourceTree = "<group>";
@@ -254,12 +271,15 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				DEA98E2C1D621BB10046EB89 /* ChatLogController.swift in Sources */,
 				DE76D1DD1D5EB35B00701533 /* MessagesController.swift in Sources */,
 				DECEAA7D1D6015DA0081F2CB /* NewMessageController.swift in Sources */,
+				DEA98E2E1D6288F00046EB89 /* Message.swift in Sources */,
 				DECEAA801D6018600081F2CB /* User.swift in Sources */,
 				DE76D1EE1D5EBA3900701533 /* LoginController.swift in Sources */,
 				DECEAA821D60B8CC0081F2CB /* LoginController+handlers.swift in Sources */,
 				DE76D1DB1D5EB35B00701533 /* AppDelegate.swift in Sources */,
+				DEA98E311D6297AC0046EB89 /* UserCell.swift in Sources */,
 				DE76D1F11D5EC6A200701533 /* Extensions.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

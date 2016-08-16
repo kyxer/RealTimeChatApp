@@ -9,7 +9,7 @@
 import UIKit
 import Firebase
 
-class LoginController: UIViewController {
+class LoginController: UIViewController, UITextFieldDelegate {
     
     var messagesController:MessagesController?
     
@@ -35,10 +35,11 @@ class LoginController: UIViewController {
         return button
     }()
     
-    let nameTextField:UITextField = {
+    lazy var nameTextField:UITextField = {
         let tf = UITextField()
         tf.placeholder = "Name"
         tf.translatesAutoresizingMaskIntoConstraints = false
+        tf.delegate = self
         return tf
     }()
     
@@ -49,10 +50,11 @@ class LoginController: UIViewController {
         return view
     }()
     
-    let emailTextField:UITextField = {
+    lazy var emailTextField:UITextField = {
         let tf = UITextField()
         tf.placeholder = "Email"
         tf.translatesAutoresizingMaskIntoConstraints = false
+        tf.delegate = self
         return tf
     }()
     
@@ -63,11 +65,12 @@ class LoginController: UIViewController {
         return view
     }()
     
-    let passwordTextField:UITextField = {
+    lazy var passwordTextField:UITextField = {
         let tf = UITextField()
         tf.placeholder = "Password"
         tf.translatesAutoresizingMaskIntoConstraints = false
         tf.secureTextEntry = true
+        tf.delegate = self
         return tf
     }()
     
@@ -272,7 +275,9 @@ class LoginController: UIViewController {
                 print(err)
                 return
             }
-            self.messagesController?.navigationItem.title = values["name"] as? String
+            let user = User()
+            user.setValuesForKeysWithDictionary(values)
+            self.messagesController?.setupNavBarWithUser(user)
             self.dismissViewControllerAnimated(true, completion: nil)
         })
     }
@@ -296,6 +301,24 @@ class LoginController: UIViewController {
         passwordTextFieldHeightAnchor = passwordTextField.heightAnchor.constraintEqualToAnchor(inputsContainerView.heightAnchor, multiplier: loginRegisterSegmentedControl.selectedSegmentIndex == 0 ? 1/2 : 1/3)
         passwordTextFieldHeightAnchor?.active = true
     
+    }
+    
+    func textFieldShouldReturn(textField: UITextField) -> Bool {
+        if textField == nameTextField {
+            emailTextField.becomeFirstResponder()
+        }
+        if textField == emailTextField {
+            passwordTextField.becomeFirstResponder()
+        }
+        if textField == passwordTextField {
+            if loginRegisterSegmentedControl.selectedSegmentIndex == 0 {
+                handleLogin()
+            } else {
+                handleRegister()
+            }
+        }
+        
+        return true
     }
     
 

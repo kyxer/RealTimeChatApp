@@ -13,6 +13,7 @@ class NewMessageController: UITableViewController {
 
     let cellId = "cellId"
     var users = [User]()
+    var messageController:MessagesController?
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -29,6 +30,7 @@ class NewMessageController: UITableViewController {
             
             if let dictionary = snapshot.value as? [String:AnyObject] {
                 let user = User()
+                user.id = snapshot.key
                 user.setValuesForKeysWithDictionary(dictionary)
                 self.users.append(user)
                 
@@ -67,39 +69,15 @@ class NewMessageController: UITableViewController {
     override func tableView(tableView: UITableView, heightForRowAtIndexPath indexPath: NSIndexPath) -> CGFloat {
         return 72
     }
-}
-
-class UserCell: UITableViewCell {
     
-    override func layoutSubviews() {
-        super.layoutSubviews()
+    override func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {
         
-        textLabel?.frame = CGRectMake(64, textLabel!.frame.origin.y - 2, textLabel!.frame.width, textLabel!.frame.height)
-        detailTextLabel?.frame = CGRectMake(64, detailTextLabel!.frame.origin.y + 2, detailTextLabel!.frame.width, detailTextLabel!.frame.height)
+        dismissViewControllerAnimated(true) {
+            let user = self.users[indexPath.row]
+            self.messageController?.showChatController(user)
+            
+        }
     }
     
-    let profileImageView:UIImageView = {
-        let imageView = UIImageView()
-        imageView.image = UIImage(named:"img_profile_list")
-        imageView.translatesAutoresizingMaskIntoConstraints = false
-        imageView.layer.cornerRadius = 24
-        imageView.layer.masksToBounds = true
-        imageView.contentMode = .ScaleAspectFill
-        return imageView
-    }()
-    override init(style: UITableViewCellStyle, reuseIdentifier: String?) {
-        super.init(style: .Subtitle, reuseIdentifier: reuseIdentifier)
-        addSubview(profileImageView)
-        
-        profileImageView.leftAnchor.constraintEqualToAnchor(self.leftAnchor, constant: 8).active = true
-        profileImageView.centerYAnchor.constraintEqualToAnchor(self.centerYAnchor).active = true
-        profileImageView.widthAnchor.constraintEqualToConstant(48).active = true
-        profileImageView.heightAnchor.constraintEqualToConstant(48).active = true
-        
-    }
-    
-    required init?(coder aDecoder: NSCoder) {
-        fatalError("init(coder:) has not been implemented")
-    }
     
 }
